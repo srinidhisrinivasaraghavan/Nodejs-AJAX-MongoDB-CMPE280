@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<!--
+	Photon by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Registration with AJAX-Node.js</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="/css/ie9.css" /><![endif]-->
+		<script>
+	function checkEmail(){
+if(document.getElementById('email').value === document.getElementById('verifyEmail').value) {
+    	document.getElementById("emailErrorMsg").innerHTML ="";
+    	document.getElementById("mySubmit").disabled = false;
+    	return true;
+    } else {
+    	document.getElementById("emailErrorMsg").innerHTML ="Verify email shuld be same as email"
+    	document.getElementById("emailErrorMsg").style.color ="red";
+    	document.getElementById("mySubmit").disabled = true;
+    	return false;
+    }	
+}
+
+function checkPassword() {
+    if(document.getElementById('password').value === document.getElementById('verifyPassword').value) {
+    	document.getElementById("passwordErrorMsg").innerHTML ="";
+    	document.getElementById("mySubmit").disabled = false;
+    	return true;
+    } else {
+    	document.getElementById("passwordErrorMsg").innerHTML ="Verify password shuld be same as password"
+    	document.getElementById("passwordErrorMsg").style.color ="red";
+    	document.getElementById("mySubmit").disabled = true;
+    	return false;
+    }
+}
+
+function storeDetails(){
+
+			var userId=document.getElementById("userId").value;
+			var email=document.getElementById("email").value;
+			var password=document.getElementById("password").value;
+			var mobile=document.getElementById("mobile").value;
+			var ques1=document.getElementById("securityQuestion1").value;
+			var ans1=document.getElementById("securityAnswer1").value;
+			var ques2=document.getElementById("securityQuestion2").value;
+			var ans2=document.getElementById("securityAnswer2").value;
+			var address=document.getElementById("address").value;
+			var interests=document.getElementById("interestedAreas").value;
+
+
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("POST", "Save", true);
+			xmlhttp.onreadystatechange = Updated;
+			xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			xmlhttp.send("userId=" + userId 
+					+ "&email=" +  email
+					+ "&password=" + password 
+					+ "&mobile=" + mobile
+					+ "&ques1=" + ques1
+					+ "&ans1=" + ans1
+					+ "&ques2=" + ques2
+					+ "&ans2=" + ans2
+					+ "&address=" + address
+					+ "&interests=" + interests);
+
+			function Updated() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					if (xmlhttp.responseText.indexOf("Failed") == 0) {
+						alert("Oops! Something went wrong. Try again");
+					} else {
+						alert("Saved Successfully!");
+					}
+					
+				}
+			}
+			return true;
+}
+
+function getCharTypeCounts(m)
+{
+	var iChars = "@~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
+ 	var charArr = m.split("");
+ 	var spl = 0;
+ 	var upper = 0;
+ 	var lower = 0;
+ 	for(var i = 0; i < charArr.length; i++)
+ 	{
+ 		if(iChars.indexOf(charArr[i]) != -1) {
+ 			spl++;
+ 		}
+ 		else if(charArr[i] == charArr[i].toUpperCase()) {
+ 			upper++;
+ 		} 		
+ 		else {
+ 			lower++;
+ 		}
+	}
+ 	return [spl, upper, lower];
+}
+
+function passStrength(m)
+{
+	var arr = getCharTypeCounts(m);
+ 	var special = arr[0];
+ 	var upper = arr[1];
+ 	var lower = arr[2];
+ 	var strength = "";
+ 	var value = 10;
+ 	if(special >=2 && upper >= 3 && lower >= 3) {
+	   	if(special > 4) {
+   			strength = "Strong";
+   			value = 100;
+   		} else if(special == 3) {
+   			strength = "Medium";
+   			value = 60;
+   		} else {
+   			strength = "Normal";
+   			value = 30;
+   		} 
+ 	}
+	document.getElementById("progBar").style.display = "inline";
+	document.getElementById('progBar').style.display = '';
+	document.getElementById("progBar").value = value;
+}
+
+function allowDrop(ev) {
+	ev.preventDefault();
+}
+
+
+function drag(ev) {
+	ev.dataTransfer.setData("text", ev.target.id);
+}
+
+
+function drop(ev) {
+	ev.preventDefault();
+	var data = ev.dataTransfer.getData("text");
+	ev.target.appendChild(document.getElementById(data));
+}
+function myFunction() {
+	    console.log("in myFunction");
+		document.getElementById("userId").value="";
+		document.getElementById("email").value="";
+		document.getElementById("verifyEmail").value="";
+		document.getElementById("password").value="";
+		document.getElementById("verifyPassword").value="";
+		document.getElementById("mobile").value="";
+		document.getElementById("securityQuestion1").value="";
+		document.getElementById("securityAnswer1").value="";
+		document.getElementById("securityQuestion2").value="";
+		document.getElementById("securityAnswer2").value="";
+		document.getElementById("address").value="";
+		document.getElementById("interestedAreas").value="";
+		document.getElementById("progBar").style.display = "none";
+}
+</script>
+</head>
+
+	<body>
+
+		<!-- Header -->
+			<section id="header">
+				<div class="inner">
+					<span class="icon major fa-user"></span>
+					<h1> <strong>Registration</strong><br/>
+					with HTML, Javascript, AJAX, Node.js(Express), MongoDB(mongojs)<br/> <a href="https://github.com/srinidhisrinivasaraghavan/Nodejs-AJAX-MongoDB-CMPE280">Github Link</a>.</h1>
+					<p>Done as a part of CMPE280 - Web UI Design and Development. SJSU<br />
+					By Srinidhi Srinivasa Raghavan</p>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Discover</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main style1">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<form id="registrationForm" action="" onsubmit="storeDetails()">
+		<br>
+		<label class="labelStyle"> User ID </label>
+		<input type="text" id="userId" value="" placeholder="Enter user ID" required autofocus >
+		<br> 	    
+		
+		<br> 
+		<label class="labelStyle">  Email: </label>
+		<input type="email" id="email" value="" placeholder="Enter email address" required autofocus >
+		<br>
+		
+		<br> 
+	    <label class="labelStyle">Verify Email Address </label>
+	    <input type="text" id="verifyEmail" value="" placeholder="Confirm email address" onchange="checkEmail()" required autofocus ><label id="emailErrorMsg"></label>
+	    <br>
+		
+		<br> 
+		<label class="labelStyle">Password: </label>  
+		<input type="password" id="password" placeholder="Enter password" required pattern="((?=.*[a-z]{3,})(?=.*[A-Z]{3,})(?=.*[@#$%!^&*()_+=|]{2,}).{6,})" autofocus onchange="passStrength(this.value)" >
+		<a title="Must include 3 upper case characters, 3 lower case characters, and 2 special character(!,#,$,%).">
+			<img src="question.JPG" height="16px" />
+		</a>
+		&nbsp; 
+		<progress id="progBar" max=100 value=0 style="display:none"></progress>
+		<br>
+		
+		<br> 
+		<label class="labelStyle"> Verify Password:</label>
+		<input type="password" id="verifyPassword" value="" placeholder="Must be same as password" required onchange="checkPassword()" autofocus ><label id="passwordErrorMsg"></label>
+		<br>
+			
+		<br> 
+		<label class="labelStyle"> Mobile</label>  
+		<input type="text" id="mobile" value="" placeholder="Enter phone number" required pattern='\d{10}' autofocus >
+		<br>
+				
+		<br> 
+		<label class="labelStyle"> Security Question </label> 
+        <!--<input list="secq1" id="securityQuestion1" required placeholder="Select one" autofocus > 
+        <datalist id="secq1">
+          <option value="Sum of 2+3 =">
+          <option value="Sum of 100+200 =">
+          <option value="23 * 100 =">
+          <option value="Capital of India?">
+          <option value="Capital of USA?">
+        </datalist>-->
+        
+								<div class="12u$">
+									<div class="select-wrapper">
+										<select name="demo-category" id="securityQuestion1">
+											<option value="-Select One-">-Select One-</option>
+											<option value="Sum of 2+3 =">Sum of 2+3 =</option>
+          									<option value="Sum of 100+200 =">Sum of 100+200 =</option>
+          									<option value="23 * 100 =">23 * 100 =</option>
+         								    <option value="Capital of India?">Capital of India?</option>
+          									<option value="Capital of USA?">Capital of USA?</option>
+										</select>
+									</div>
+
+
+
+       
+
+
+       <br> 
+       <label class="labelStyle"> Security Answer</label> 
+       <input type="text" id="securityAnswer1" autofocus required placeholder="Enter answer"  >
+       <br>  
+        
+        <br> 
+		<label class="labelStyle"> Security Question </label> 
+        <div class="select-wrapper">
+										<select name="demo-category" id="securityQuestion2">
+											<option value="-Select One-">-Select One-</option>
+											<option value="Sum of 8+9 =">Sum of 8+9 =</option>
+          									<option value="Sum of 1000+2000 =">Sum of 1000+2000 =</option>
+          									<option value="235 * 100 =">235 * 100 =</option>
+          									<option value="Capital of Canada?">Capital of Canada?</option>
+          									<option value="Capital of Srilanka?">Capital of Srilanka?</option>
+										</select>
+									</div>
+        <br>  
+
+
+       
+       <br> 
+       <label class="labelStyle"> Security Answer</label> 
+       <input type="text" id="securityAnswer2" autofocus required placeholder="Enter answer"  >
+       <br>
+       
+        <br> 
+        <label class="labelStyle"> Address</label> 
+        <textarea id="address" rows="4" cols="50" required></textarea>
+        <br>
+       
+        
+        <br> 
+        <label class="labelStyle"> Interested areas. Select one or more</label> 
+        <textarea id="interestedAreas" rows="4" cols="50" required></textarea>
+        <br>
+
+        <div id="myDiv" style="">
+        <img id="drag1" src="/sjsu.png" draggable="true" ondragstart="drag(event)" width="80" height="80">
+        <img id="drag2" src="/cisco.png" draggable="true" ondragstart="drag(event)" width="80" height="80">
+        <img id="drag3" src="/ms.JPG" draggable="true" ondragstart="drag(event)" width="80" height="80"><br>
+        <p style="font-size: 20px; font-weight: bold;">Logos CAPTCHA Target Drop</p>
+        <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="allowDrop(event)" style = "width:250px; height:250px; padding:10px; border:2px solid #aaaaaa;"></div>
+        </div><br>
+          
+       <br>
+	   <br> 
+	   <input type="submit" value="Register" id="mySubmit">
+	   	<input type="button" id="hit" value="Clear" onclick="myFunction()">
+	
+	</form>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Three -->
+			<section id="two" class="main style1 special">
+				<div class="container">
+					<header class="major">
+						<h2>Similar Projects</h2>
+					</header>
+					<p></p>
+					<div class="row 150%">
+						<div class="4u 12u$(medium)">
+							
+							<ul class="actions">
+								<li><a href="#" class="button">More</a></li>
+							</ul>
+						</div>
+						<div class="4u 12u$(medium)">
+							
+							<ul class="actions">
+								<li><a href="#" class="button">More</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							
+							<ul class="actions">
+								<li><a href="#" class="button">More</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/srinidhisrinivasaraghavan" class="icon alt fa-linkedin"><span class="label">Linkedin</span></a></li>
+					<li><a href="https://github.com/srinidhisrinivasaraghavan" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Srinidhi Srinivasa Raghavan</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+			<script src="/js/jquery.min.js"></script>
+			<script src="/js/jquery.scrolly.min.js"></script>
+			<script src="/js/skel.min.js"></script>
+			<script src="/js/util.js"></script>
+			<!--[if lte IE 8]><script src="/js/ie/respond.min.js"></script><![endif]-->
+			<script src="/js/main.js"></script>
+
+	</body>
+</html>
