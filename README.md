@@ -15,5 +15,5 @@ npm install multer --save
 node server.js
 
 3. open link in browser
-http://localhost:8081/
+http://localhost:8081/register.html
 
